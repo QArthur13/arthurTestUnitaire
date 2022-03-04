@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Service\RickAndMortyGestion;
 
 class ApiTest extends WebTestCase
 {
@@ -29,6 +28,71 @@ class ApiTest extends WebTestCase
         $this->assertJson($response->getContent());
 
         $responseData = json_decode($response->getContent(), true);
-        $this->assertTrue(true);
+        //dump($responseData);
+        $this->assertEquals($responseData, $responseData);
+    }
+
+    public function testApiCart(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('GET', '/api/cart');
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals($responseData, $responseData);
+    }
+
+    public function testApiProduct(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('GET', '/api/products/5');
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        //dump(count($responseData)); die();
+        $this->assertContains(count($responseData), [5]);
+        //$this->assertArrayHasKey($responseData, [$responseData]);
+    }
+
+    public function testApiAddProductToCart(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('POST', '/api/cart/4', [
+
+            'quantity' => 5
+        ]);
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        //dump($responseData['products'][0]);die;
+        $this->assertEquals($responseData['products'][0], [
+            "id" => 4,
+            "name" => "Beth Smith",
+            "price" => "8",
+            "quantity" => 70,
+            "image" => "https://rickandmortyapi.com/api/character/avatar/4.jpeg"
+        ]);
+    }
+
+    public function testApiDeleteProductToCart(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('DELETE', '/api/cart/3');
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals($responseData, $responseData);
     }
 }
