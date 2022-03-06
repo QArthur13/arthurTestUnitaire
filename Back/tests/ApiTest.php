@@ -77,16 +77,33 @@ class ApiTest extends WebTestCase
         $this->assertEquals($responseData['products'][0], [
             "id" => 4,
             "name" => "Beth Smith",
-            "price" => "8",
-            "quantity" => 70,
+            "price" => "9,99",
+            "quantity" => 30,
             "image" => "https://rickandmortyapi.com/api/character/avatar/4.jpeg"
         ]);
+    }
+
+    public function testApiFailAddProductToCart(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('POST', '/api/cart/1', [
+
+            'quantity' => 40
+        ]);
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        //dump($responseData);die;
+        $this->assertEquals(['error' => 'too many'], $responseData);
     }
 
     public function testApiDeleteProductToCart(): void
     {
         $client = static::createClient();
-        $client->jsonRequest('DELETE', '/api/cart/3');
+        $client->jsonRequest('DELETE', '/api/cart/4');
 
         $response = $client->getResponse();
         $this->assertResponseIsSuccessful();
@@ -95,4 +112,5 @@ class ApiTest extends WebTestCase
         $responseData = json_decode($response->getContent(), true);
         $this->assertEquals($responseData, $responseData);
     }
+
 }
