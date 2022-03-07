@@ -35,8 +35,7 @@ const useCart = () => {
         .then((res) => res.json())
         .then((res) => {
           setMessage("Produit bien supprimé");
-          loadCart();
-          resolve(true);
+          loadCart().then(resolve);
         });
     });
   };
