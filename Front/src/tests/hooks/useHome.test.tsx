@@ -41,4 +41,4 @@ test("load products", async () => {
     const { products } = result.current;
     console.log(products);
 
-});
+}, 8000);

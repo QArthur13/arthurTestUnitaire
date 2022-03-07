@@ -64,6 +64,5 @@ test("load cart", async () => {
     });
 
     const {products} = result.current;
-    console.log(products);
 
 } );
