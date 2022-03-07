@@ -18,22 +18,22 @@ const server = setupServer(
                         {
                             id: 1,
                             name: 'Rick Sanchez',
-                            price: '15',
-                            quantity: 20,
+                            price: '8',
+                            quantity: 30,
                             image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
                         },
                         {
-                            id: 12,
-                            name: 'Alexander',
-                            price: '15',
+                            id: 13,
+                            name: 'Alien Googah',
+                            price: '9,99',
                             quantity: 70,
-                            image: 'https://rickandmortyapi.com/api/character/avatar/12.jpeg'
+                            image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
                         },
                         {
                             id: 17,
                             name: 'Annie',
-                            price: '8',
-                            quantity: 30,
+                            price: '15',
+                            quantity: 5,
                             image: 'https://rickandmortyapi.com/api/character/avatar/17.jpeg'
                         }
                     ]
