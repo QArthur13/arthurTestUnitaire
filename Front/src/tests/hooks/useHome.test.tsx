@@ -6,7 +6,7 @@ import useHome from "../../hooks/useHome";
 const server = setupServer(
 
     rest.get(
-        'http://localhost/products',
+        'http://localhost:8000/products',
         (req, res, ctx) => {
 
             const { listProducts } = req.body;
