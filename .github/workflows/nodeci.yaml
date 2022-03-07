@@ -28,8 +28,9 @@ jobs:
           node-version: "14.x"
 
       - name: Install dependencies
-        working-directory: '/Front'
-        run: npm install
+        working-directory: /Front
+        run:ls 
+            npm install
 
       - name: Run test
         run: npm test
