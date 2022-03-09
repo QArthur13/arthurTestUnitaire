@@ -13,8 +13,8 @@ use App\Service\RickAndMortyApiService;
 class AppFixtures extends Fixture
 {
     private RickAndMortyApiService $rickAndMortyService;
-    private $prices = ["8", "9,99", "15", "16.50", "20"];
-    private $quantites = [0, 2,5,20,30,70];
+    /*private $prices = ["8", "9,99", "15", "16.50", "20"];
+    private $quantites = [0, 2,5,20,30,70];*/
 
     public function __construct(RickAndMortyApiService $rickAndMortyService)
     {
@@ -27,8 +27,10 @@ class AppFixtures extends Fixture
         foreach ($data as $model){
             $product = new Product();
             $product->setName($model->getName());
-            $product->setPrice($this->prices[array_rand($this->prices, 1)]);
-            $product->setQuantity($this->quantites[array_rand($this->quantites, 1)]);
+            //$product->setPrice($this->prices[array_rand($this->prices, 1)]);
+            $product->setPrice("20");
+            //$product->setQuantity($this->quantites[array_rand($this->quantites, 1)]);
+            $product->setQuantity(20);
             $product->setImage($model->getImage());
             $manager->persist($product);
         }

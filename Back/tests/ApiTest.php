@@ -32,19 +32,6 @@ class ApiTest extends WebTestCase
         $this->assertEquals($responseData, $responseData);
     }
 
-    public function testApiCart(): void
-    {
-        $client = static::createClient();
-        $client->jsonRequest('GET', '/api/cart');
-
-        $response = $client->getResponse();
-        $this->assertResponseIsSuccessful();
-        $this->assertJson($response->getContent());
-
-        $responseData = json_decode($response->getContent(), true);
-        $this->assertEquals($responseData, $responseData);
-    }
-
     public function testApiProduct(): void
     {
         $client = static::createClient();
@@ -60,6 +47,26 @@ class ApiTest extends WebTestCase
         //$this->assertArrayHasKey($responseData, [$responseData]);
     }
 
+    public function testApiProductId(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('GET', '/api/productId/5');
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        //dump($responseData[0]['id']); die();
+        $this->assertEquals($responseData[0], [
+            "id" => 5,
+            "name" => "Jerry Smith",
+            "price" => "20",
+            "quantity" => 20,
+            "image" => "https://rickandmortyapi.com/api/character/avatar/5.jpeg"
+        ]);
+    }
+
     public function testApiAddProductToCart(): void
     {
         $client = static::createClient();
@@ -73,22 +80,35 @@ class ApiTest extends WebTestCase
         $this->assertJson($response->getContent());
 
         $responseData = json_decode($response->getContent(), true);
-        //dump($responseData['products'][0]);die;
+        //dump($responseData);die;
         $this->assertEquals($responseData['products'][0], [
             "id" => 4,
             "name" => "Beth Smith",
-            "price" => "9,99",
-            "quantity" => 30,
+            "price" => "20",
+            "quantity" => 20,
             "image" => "https://rickandmortyapi.com/api/character/avatar/4.jpeg"
         ]);
+    }
+
+    public function testApiCart(): void
+    {
+        $client = static::createClient();
+        $client->jsonRequest('GET', '/api/cart');
+
+        $response = $client->getResponse();
+        $this->assertResponseIsSuccessful();
+        $this->assertJson($response->getContent());
+
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertEquals($responseData, $responseData);
     }
 
     public function testApiFailAddProductToCart(): void
     {
         $client = static::createClient();
-        $client->jsonRequest('POST', '/api/cart/1', [
+        $client->jsonRequest('POST', '/api/cart/3', [
 
-            'quantity' => 40
+            'quantity' => 90
         ]);
 
         $response = $client->getResponse();

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\RickAndMortyApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +36,12 @@ class APIController extends AbstractController
     public function product(Request $request, Product $product ): Response
     {
         return $this->json($product);
+    }
+
+    #[Route('/productId/{id}', name: 'api_productId', methods: ['GET'])]
+    public function productId(Request $request, int $id, RickAndMortyGestion $rickAndMortyGestion): Response
+    {
+        return $this->json($rickAndMortyGestion->findById($id));
     }
 
     #[Route('/cart/{product}', name: 'api_add_product', methods: ['POST'])]
