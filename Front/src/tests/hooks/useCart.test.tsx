@@ -2,6 +2,7 @@ import {setupServer} from "msw/node";
 import {rest} from "msw";
 import {act, renderHook} from "@testing-library/react-hooks";
 import useCart from "../../hooks/useCart";
+import {Product} from "../../App";
 
 const server = setupServer(
 
@@ -18,22 +19,22 @@ const server = setupServer(
                         {
                             id: 1,
                             name: 'Rick Sanchez',
-                            price: '8',
-                            quantity: 30,
+                            price: '20',
+                            quantity: 20,
                             image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
                         },
                         {
                             id: 13,
                             name: 'Alien Googah',
-                            price: '9,99',
-                            quantity: 70,
+                            price: '20',
+                            quantity: 20,
                             image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
                         },
                         {
                             id: 17,
                             name: 'Annie',
-                            price: '15',
-                            quantity: 5,
+                            price: '20',
+                            quantity: 20,
                             image: 'https://rickandmortyapi.com/api/character/avatar/17.jpeg'
                         }
                     ]
@@ -44,6 +45,39 @@ const server = setupServer(
 
         }
 
+    ),
+
+    rest.delete(
+
+        "http://localhost:8000/api/cart/1",
+        (req, res, ctx) => {
+
+            return res(
+
+                ctx.json({
+
+                    products: {
+                        "1": {
+                            id: 13,
+                            name: 'Alien Googah',
+                            price: '20',
+                            quantity: 20,
+                            image: 'https://rickandmortyapi.com/api/character/avatar/13.jpeg'
+                        },
+                        "2": {
+                            id: 17,
+                            name: 'Annie',
+                            price: '20',
+                            quantity: 20,
+                            image: 'https://rickandmortyapi.com/api/character/avatar/17.jpeg'
+                        }
+                    }
+
+                })
+
+            );
+
+        }
     )
 );
 
@@ -64,5 +98,32 @@ test("load cart", async () => {
     });
 
     const {products} = result.current;
+    console.log(products);
 
 } );
+
+test("delete cart", async () => {
+
+    const deleteCart: Product = {
+
+        id: 1,
+        name: 'Rick Sanchez',
+        price: '20',
+        quantity: 20,
+        image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
+    }
+
+    const { result } = renderHook(() => useCart());
+    const { loading, removeToCart } = result.current;
+
+    expect(loading).toEqual(true);
+    await act(async () => {
+
+        await removeToCart(deleteCart);
+
+    });
+
+    const { message } = result.current;
+    console.log(message);
+
+});
